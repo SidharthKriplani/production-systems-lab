@@ -42,16 +42,18 @@ FRONTEND_HTML = """<!DOCTYPE html>
         }
 
         :root {
-            --primary: #0066ff;
-            --secondary: #00d97e;
-            --danger: #ff4757;
-            --warning: #ffa502;
-            --dark: #0f1419;
-            --darker: #050609;
+            --primary: #00d4ff;
+            --secondary: #00ff88;
+            --danger: #ff3366;
+            --warning: #ffaa00;
+            --dark: #0a0e1a;
+            --darker: #020305;
             --light: #f8f9fa;
-            --border: #1a1f2e;
+            --border: #0d1425;
             --text-primary: #ffffff;
-            --text-secondary: #b0b8c1;
+            --text-secondary: #a8b3c1;
+            --glow-primary: rgba(0, 212, 255, 0.4);
+            --glow-secondary: rgba(0, 255, 136, 0.4);
         }
 
         body {
@@ -86,21 +88,23 @@ FRONTEND_HTML = """<!DOCTYPE html>
         }
 
         h1 {
-            font-size: 3.5em;
+            font-size: 4.2em;
             margin-bottom: 15px;
-            font-weight: 700;
-            letter-spacing: -1px;
-            background: linear-gradient(135deg, #0066ff, #00d97e);
+            font-weight: 800;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, #00d4ff, #00ff88);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             animation: fadeInDown 0.8s ease;
+            text-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
+            filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.2));
         }
 
         @keyframes fadeInDown {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(-30px);
             }
             to {
                 opacity: 1;
@@ -143,17 +147,19 @@ FRONTEND_HTML = """<!DOCTYPE html>
         }
 
         .tab-btn.active {
-            background: linear-gradient(135deg, #0066ff, #0052cc);
+            background: linear-gradient(135deg, #00d4ff, #0099dd);
             border-color: transparent;
-            color: white;
-            box-shadow: 0 8px 32px rgba(0, 102, 255, 0.3);
-            transform: translateY(-2px);
+            color: #000;
+            font-weight: 700;
+            box-shadow: 0 0 30px var(--glow-primary), 0 8px 32px rgba(0, 212, 255, 0.3);
+            transform: translateY(-4px);
         }
 
         .tab-btn:hover:not(.active) {
             border-color: var(--primary);
             color: var(--primary);
-            background: rgba(0, 102, 255, 0.05);
+            background: rgba(0, 212, 255, 0.08);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
         }
 
         .module-content {
@@ -190,12 +196,12 @@ FRONTEND_HTML = """<!DOCTYPE html>
         }
 
         .comparison-card {
-            background: linear-gradient(135deg, rgba(15, 20, 25, 0.95), rgba(26, 31, 46, 0.5));
-            border: 1.5px solid var(--border);
-            border-radius: 16px;
-            padding: 40px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(20px);
+            background: linear-gradient(135deg, rgba(10, 14, 26, 0.98), rgba(13, 20, 37, 0.6));
+            border: 2px solid var(--border);
+            border-radius: 18px;
+            padding: 48px;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(30px);
             position: relative;
             overflow: hidden;
         }
@@ -206,14 +212,28 @@ FRONTEND_HTML = """<!DOCTYPE html>
             top: 0;
             left: 0;
             right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+        }
+
+        .comparison-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at top right, var(--glow-primary), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
         }
 
         .comparison-card:hover {
             border-color: var(--primary);
-            box-shadow: 0 20px 60px rgba(0, 102, 255, 0.2);
-            transform: translateY(-8px);
+            box-shadow: 0 0 40px var(--glow-primary), 0 20px 80px rgba(0, 212, 255, 0.15);
+            transform: translateY(-12px);
+        }
+
+        .comparison-card:hover::after {
+            opacity: 1;
         }
 
         .card-title {
@@ -252,11 +272,13 @@ FRONTEND_HTML = """<!DOCTYPE html>
         }
 
         .metric-value {
-            font-size: 2.2em;
-            font-weight: 700;
+            font-size: 2.8em;
+            font-weight: 900;
             color: var(--secondary);
-            margin-top: 8px;
-            letter-spacing: -0.5px;
+            margin-top: 10px;
+            letter-spacing: -1px;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+            filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.3));
         }
 
         .btn {
@@ -382,12 +404,29 @@ FRONTEND_HTML = """<!DOCTYPE html>
             letter-spacing: -0.3px;
         }
 
+        .module-content {
+            display: none;
+        }
+
+        .module-content.active {
+            display: block;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         @media (max-width: 768px) {
             .comparison-grid {
                 grid-template-columns: 1fr;
             }
             h1 {
-                font-size: 2em;
+                font-size: 2.2em;
+            }
+            .container {
+                padding: 40px 20px;
             }
         }
     </style>
