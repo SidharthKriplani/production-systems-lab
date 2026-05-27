@@ -26,16 +26,22 @@ app = FastAPI(
     version="0.1.0"
 )
 
-# Serve frontend
-frontend_path = os.path.join(os.path.dirname(__file__), "../../frontend")
-if os.path.exists(frontend_path):
-    @app.get("/")
-    async def serve_frontend():
-        """Serve the frontend dashboard"""
-        frontend_file = os.path.join(frontend_path, "index.html")
-        if os.path.exists(frontend_file):
-            return FileResponse(frontend_file)
-        return {"message": "Production Systems Lab"}
+@app.get("/", response_class=FileResponse)
+async def serve_frontend():
+    """Serve the frontend dashboard"""
+    # Try multiple possible paths
+    possible_paths = [
+        os.path.join(os.path.dirname(__file__), "../../frontend/index.html"),
+        "/app/frontend/index.html",
+        "./frontend/index.html",
+    ]
+
+    for path in possible_paths:
+        if os.path.exists(path):
+            return FileResponse(path, media_type="text/html")
+
+    # If no file found, return API response
+    return {"message": "Production Systems Lab - visit /docs for API"}
 
 # ============================================================================
 # Data Models (Pydantic)
