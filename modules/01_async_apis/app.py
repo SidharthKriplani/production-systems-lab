@@ -57,17 +57,34 @@ FRONTEND_HTML = """<!DOCTYPE html>
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
-            background: linear-gradient(135deg, var(--darker) 0%, #0a0e1a 50%, var(--dark) 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0a14 0%, #151928 50%, #0d0f1d 100%);
             color: var(--text-primary);
             min-height: 100vh;
             background-attachment: fixed;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 20% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 50%, rgba(0, 255, 136, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .container {
             max-width: 1600px;
             margin: 0 auto;
-            padding: 60px 40px;
+            padding: 80px 40px;
+            position: relative;
+            z-index: 1;
         }
 
         header {
@@ -82,9 +99,10 @@ FRONTEND_HTML = """<!DOCTYPE html>
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #0066ff, transparent);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d4ff, #00ff88, transparent);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
         }
 
         h1 {
@@ -334,25 +352,39 @@ FRONTEND_HTML = """<!DOCTYPE html>
         }
 
         .info-box {
-            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(0, 217, 126, 0.05));
-            border: 1.5px solid rgba(0, 102, 255, 0.3);
-            border-radius: 16px;
-            padding: 32px;
-            margin-top: 40px;
-            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(0, 255, 136, 0.04));
+            border: 2px solid rgba(0, 212, 255, 0.4);
+            border-radius: 18px;
+            padding: 40px;
+            margin-top: 50px;
+            backdrop-filter: blur(30px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
         }
 
         .info-box h3 {
-            color: var(--primary);
+            color: #00d4ff;
             margin-bottom: 12px;
-            font-size: 1.2em;
-            font-weight: 700;
+            font-size: 1.3em;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
 
         .info-box p {
             color: var(--text-secondary);
-            font-size: 0.95em;
-            line-height: 1.6;
+            font-size: 1em;
+            line-height: 1.7;
+            font-weight: 500;
         }
 
         .grid-3 {
@@ -363,13 +395,13 @@ FRONTEND_HTML = """<!DOCTYPE html>
         }
 
         .stat-card {
-            background: linear-gradient(135deg, rgba(15, 20, 25, 0.95), rgba(26, 31, 46, 0.5));
-            border: 1.5px solid var(--border);
-            border-radius: 16px;
-            padding: 32px;
+            background: linear-gradient(135deg, rgba(10, 14, 26, 0.98), rgba(13, 20, 37, 0.6));
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
             text-align: center;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(20px);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(40px);
             position: relative;
             overflow: hidden;
         }
@@ -380,14 +412,27 @@ FRONTEND_HTML = """<!DOCTYPE html>
             top: 0;
             left: 0;
             right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d4ff, #00ff88, transparent);
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, var(--glow-primary), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s;
         }
 
         .stat-card:hover {
             border-color: var(--primary);
-            box-shadow: 0 20px 60px rgba(0, 102, 255, 0.15);
-            transform: translateY(-8px);
+            box-shadow: 0 0 50px var(--glow-primary), 0 20px 80px rgba(0, 212, 255, 0.1);
+            transform: translateY(-12px);
+        }
+
+        .stat-card:hover::after {
+            opacity: 0.5;
         }
 
         .stat-number {
