@@ -10,11 +10,14 @@ This is a simple async API to demonstrate:
 """
 
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from typing import Optional
 import asyncio
 import time
 from datetime import datetime
+import os
 
 # Create the FastAPI app
 app = FastAPI(
@@ -22,6 +25,17 @@ app = FastAPI(
     description="Learn async APIs and concurrent request handling",
     version="0.1.0"
 )
+
+# Serve frontend
+frontend_path = os.path.join(os.path.dirname(__file__), "../../frontend")
+if os.path.exists(frontend_path):
+    @app.get("/")
+    async def serve_frontend():
+        """Serve the frontend dashboard"""
+        frontend_file = os.path.join(frontend_path, "index.html")
+        if os.path.exists(frontend_file):
+            return FileResponse(frontend_file)
+        return {"message": "Production Systems Lab"}
 
 # ============================================================================
 # Data Models (Pydantic)
@@ -163,20 +177,19 @@ async def async_data(request: DataRequest):
     )
 
 
-@app.get("/")
-async def root():
+@app.get("/api")
+async def api_root():
     """
-    Root endpoint with documentation
+    API root endpoint with documentation
     """
     return {
-        "message": "Welcome to Production Systems Lab - Module 1",
+        "message": "Production Systems Lab - Module 1 API",
         "documentation": "/docs",
         "endpoints": {
             "health": "/health",
             "sync_example": "/sync-data",
             "async_example": "/async-data"
-        },
-        "instructions": "Visit /docs for interactive API documentation"
+        }
     }
 
 
